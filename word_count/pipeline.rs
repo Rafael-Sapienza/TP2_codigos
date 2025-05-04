@@ -108,9 +108,9 @@ fn print_most_frequent_words(number_of_words: u64, vector_word_freq: Vec<(String
 
 fn main()
 {
-    let input_string: String = input_to_string("../exemplo1/input.txt".to_string());
+    let input_string: String = input_to_string("../input_exemplo_1/input.txt".to_string());
     let all_words:Vec<String> = input_string_to_vector(input_string);
-    let stop_words_vector:Vec<String> = stop_words_file_to_vector("../exemplo1/stop_words.txt".to_string());
+    let stop_words_vector:Vec<String> = stop_words_file_to_vector("../input_exemplo_1/stop_words.txt".to_string());
     let dict_word_freq:HashMap<String,u64> = count_freq(all_words, stop_words_vector);
     let vector_word_freq:Vec<(String,u64)> = sort_freq(dict_word_freq);
     print_most_frequent_words(10, vector_word_freq);
