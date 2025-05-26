@@ -5,6 +5,8 @@ use std::io::BufRead;
 //use std::path::Path;
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::cmp::Ordering;
+use std::cmp::min;
 
 
 fn stop_words_file_to_set(stop_words_txt: String) -> HashSet<String>
@@ -141,7 +143,7 @@ fn generate_circularly_shifted_lists(input_vector:Vec<Vec<String>>,key_words_occ
                 let circular_shifted_list = 
                 after
                 .iter()
-                .chain(before)
+                .chain(before.iter())
                 .cloned()
                 .collect();
                 circularly_shifted_lists.push(circular_shifted_list);
@@ -151,12 +153,59 @@ fn generate_circularly_shifted_lists(input_vector:Vec<Vec<String>>,key_words_occ
     circularly_shifted_lists
 }
 
+fn compare_alphabetically(a:&Vec<String>,b:&Vec<String>) -> Ordering
+{
+    if a.is_empty() || a[0].is_empty()
+    {
+        return Ordering::Less;
+    }
+    if b.is_empty() || b[0].is_empty()
+    {
+        return Ordering::Greater;
+    }
+    for i in 0..min(a.len(),b.len())
+    {
+        let first_char = a[i]
+                        .chars()
+                        .next()
+                        .unwrap()
+                        .to_lowercase()
+                        .next()
+                        .unwrap();
+        let second_char = b[i]
+                        .chars()
+                        .next()
+                        .unwrap()
+                        .to_lowercase()
+                        .next()
+                        .unwrap();
+        let order:Ordering = first_char.cmp(&second_char);
+        if order != Ordering::Equal
+        {
+            return order;
+        }
+    }
+    //Desempata pelo comprimento de vetores (numero de palavras no titulo)
+    a.len().cmp(&b.len())
+}
+
+
+fn sort_circularly_shifted_lists_alphabetically(mut circularly_shifted_lists:Vec<Vec<String>>) -> Vec<Vec<String>>
+{
+    circularly_shifted_lists.sort_by(|a,b| compare_alphabetically(a,b));
+    circularly_shifted_lists
+}
+
 fn main()
 {
     let input_vector: Vec<Vec<String>> = input_file_to_string("../input_exemplo_3/input.txt".to_string());
     let stop_words_set:HashSet<String> = stop_words_file_to_set("../input_exemplo_3/stop_words.txt".to_string());
     let key_words_occurrences:Vec<Vec<u64>> = find_key_words_indexes(&input_vector,&stop_words_set);
     //println!("{:?}",key_words_occurrences);
-    let circular_shifted_lists:Vec<Vec<String>> = generate_circularly_shifted_lists(input_vector,key_words_occurrences);
-    println!("{:?}",circular_shifted_lists);
+    let circularly_shifted_lists:Vec<Vec<String>> = generate_circularly_shifted_lists(input_vector,key_words_occurrences);
+    println!("circularly_shifted_lists:");
+    println!("{:?}",circularly_shifted_lists);
+    let sorted_final_list : Vec<Vec<String>> = sort_circularly_shifted_lists_alphabetically(circularly_shifted_lists);
+    println!("sorted final list:");
+    println!("{:?}",sorted_final_list);
 }
