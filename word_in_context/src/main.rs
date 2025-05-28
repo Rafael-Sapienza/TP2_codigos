@@ -198,8 +198,8 @@ fn sort_circularly_shifted_lists_alphabetically(mut circularly_shifted_lists:Vec
 
 fn main()
 {
-    let input_vector: Vec<Vec<String>> = input_file_to_string("../input_exemplo_3/input.txt".to_string());
-    let stop_words_set:HashSet<String> = stop_words_file_to_set("../input_exemplo_3/stop_words.txt".to_string());
+    let input_vector: Vec<Vec<String>> = input_file_to_string("../input_exemplo_do_teams/input.txt".to_string());
+    let stop_words_set:HashSet<String> = stop_words_file_to_set("../input_exemplo_do_teams/stop_words.txt".to_string());
     let key_words_occurrences:Vec<Vec<u64>> = find_key_words_indexes(&input_vector,&stop_words_set);
     //println!("{:?}",key_words_occurrences);
     let circularly_shifted_lists:Vec<Vec<String>> = generate_circularly_shifted_lists(input_vector,key_words_occurrences);
@@ -209,3 +209,33 @@ fn main()
     println!("sorted final list:");
     println!("{:?}",sorted_final_list);
 }
+
+fn somar(a:i32,b:i32) -> i32
+{
+    a + b
+}
+
+
+
+#[cfg(test)]
+mod testes_de_unidade
+{
+    use super::*;
+
+    #[test]
+    fn teste_somar_dois_positivos()
+    {
+        assert_eq!(somar(2,3),5);
+    }
+
+    #[test]
+    fn test_input_file_to_string()
+    {
+        let resultado_real = input_file_to_string("../inputs_para_teste/input_para_teste_1.txt".to_string());
+        let resultado_esperado: Vec<Vec<String>> = vec![vec!["Understanding".to_string(),"Unit".to_string(),"and".to_string(),"Integration".to_string(),"Testing".to_string(),"in".to_string(),"Rust".to_string()],vec!["A".to_string(),"Beginner".to_string(),"s".to_string(),"Guide".to_string(),"to".to_string(),"Testing".to_string(),"in".to_string(),"Rust".to_string()]];
+        println!("resultado real: {:?}", resultado_real);
+        println!("resultado esperado: {:?}", resultado_esperado);
+        assert_eq!(resultado_real,resultado_esperado);
+    }
+}
+    
