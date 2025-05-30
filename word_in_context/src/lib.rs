@@ -206,8 +206,13 @@ fn sort_circularly_shifted_lists_alphabetically(
 }
 
 fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
-    println!("{:?}", final_list);
-    func();
+    
+    let mut file = File::create("saida.txt")
+
+    for sublist in &final_list {
+        writeln!(file, "{}", sublist.join(" "))
+    }
+    func();  
     final_list
 }
 
