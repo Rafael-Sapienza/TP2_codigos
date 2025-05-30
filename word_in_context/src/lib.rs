@@ -9,15 +9,20 @@ use std::cmp::min;
 use std::collections::HashSet;
 
 pub fn keyword_in_context(input_path: String, stop_words_path: String) {
-    input_file_to_vector(
-        stop_words_file_to_set, input_path, stop_words_path
-    );
+    input_file_to_vector(stop_words_file_to_set, input_path, stop_words_path);
 }
 
 fn input_file_to_vector(
     func: fn(
         fn(
-            fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
+            fn(
+                fn(
+                    fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>,
+                    Vec<Vec<String>>,
+                ) -> Vec<Vec<String>>,
+                Vec<Vec<String>>,
+                Vec<Vec<u64>>,
+            ) -> Vec<Vec<String>>,
             &Vec<Vec<String>>,
             &HashSet<String>,
         ) -> Vec<Vec<u64>>,
@@ -26,7 +31,7 @@ fn input_file_to_vector(
     ) -> HashSet<String>,
     input_txt: String,
     stop_words_txt: String,
-) ->  Vec<Vec<String>> {
+) -> Vec<Vec<String>> {
     let mut input_vector: Vec<Vec<String>> = Vec::new();
     let input_file = File::open(&input_txt);
     match input_file {
@@ -58,12 +63,16 @@ fn input_file_to_vector(
         Err(e) => panic!("Erro ao ler o arquivo '{}' : {}", input_txt, e),
     }
     func(find_key_words_indexes, stop_words_txt, input_vector.clone());
-	input_vector
+    input_vector
 }
 
 fn stop_words_file_to_set(
     func: fn(
-        fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
+        fn(
+            fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>,
+            Vec<Vec<String>>,
+            Vec<Vec<u64>>,
+        ) -> Vec<Vec<String>>,
         &Vec<Vec<String>>,
         &HashSet<String>,
     ) -> Vec<Vec<u64>>,
@@ -96,7 +105,7 @@ fn stop_words_file_to_set(
         &input_vector,
         &stop_words_set,
     );
-	stop_words_set
+    stop_words_set
 }
 
 /*
@@ -123,7 +132,11 @@ fn separate_stop_and_key_words(input_vector:Vec<Vec<String>>, stop_words_vector:
 */
 
 fn find_key_words_indexes(
-    func: fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
+    func: fn(
+        fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>,
+        Vec<Vec<String>>,
+        Vec<Vec<u64>>,
+    ) -> Vec<Vec<String>>,
     input_vector: &Vec<Vec<String>>,
     stop_words_set: &HashSet<String>,
 ) -> Vec<Vec<u64>> {
@@ -141,7 +154,7 @@ fn find_key_words_indexes(
         input_vector.to_vec(),
         key_words_occurrences.clone(),
     );
-	key_words_occurrences
+    key_words_occurrences
 }
 
 fn generate_circularly_shifted_lists(
@@ -162,7 +175,7 @@ fn generate_circularly_shifted_lists(
         }
     }
     func(print_final_list, circularly_shifted_lists.clone());
-	circularly_shifted_lists
+    circularly_shifted_lists
 }
 
 fn sort_circularly_shifted_lists_alphabetically(
@@ -189,13 +202,13 @@ fn sort_circularly_shifted_lists_alphabetically(
     }
     circularly_shifted_lists.sort_by(|a, b| compare_alphabetically(a, b));
     func(no_op, circularly_shifted_lists.clone());
-	circularly_shifted_lists
+    circularly_shifted_lists
 }
 
 fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
     println!("{:?}", final_list);
     func();
-	final_list
+    final_list
 }
 
 fn no_op() {}
@@ -203,21 +216,24 @@ fn no_op() {}
 #[cfg(test)]
 mod tests {
     use super::*;
-	
-	fn ghost_stop_words_file_to_set(
-		func: fn(
-			fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
-			&Vec<Vec<String>>,
-			&HashSet<String>,
-		),
-		stop_words_txt: String,
-		input_vector: Vec<Vec<String>>,
-	) {}
+
+    fn ghost_stop_words_file_to_set(
+        func: fn(
+            fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+            &Vec<Vec<String>>,
+            &HashSet<String>,
+        ),
+        stop_words_txt: String,
+        input_vector: Vec<Vec<String>>,
+    ) {
+    }
 
     #[test]
     fn test_input_file_to_vector() {
-        let resultado_real =
-            input_file_to_vector(ghost_stop_words_file_to_set, "../inputs_para_teste/input_para_teste_1.txt".to_string());
+        let resultado_real = input_file_to_vector(
+            ghost_stop_words_file_to_set,
+            "../inputs_para_teste/input_para_teste_1.txt".to_string(),
+        );
         let resultado_esperado: Vec<Vec<String>> = vec![
             vec![
                 "Understanding".to_string(),
