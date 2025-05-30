@@ -1,7 +1,6 @@
 use std::cmp::Ordering;
 use std::cmp::min;
 use std::collections::HashSet;
-use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -10,16 +9,7 @@ use std::io::Write;
 //use std::path::Path;
 //use std::collections::HashMap;
 
-pub fn keyword_in_context() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() <= 1 {
-        println!(
-            "Please provide the input path and the stop words path as command-line arguments."
-        );
-        return;
-    }
-    let input_path: String = args[1].clone();
-    let stop_words_path: String = args[2].clone();
+pub fn keyword_in_context(input_path: String, stop_words_path: String) {
     input_file_to_vector(stop_words_file_to_set, input_path, stop_words_path);
 }
 
