@@ -1,14 +1,24 @@
-//use std::fs;
-use std::fs::File;
-use std::io::BufRead;
-use std::io::BufReader;
-//use std::path::Path;
-//use std::collections::HashMap;
 use std::cmp::Ordering;
 use std::cmp::min;
 use std::collections::HashSet;
+use std::env;
+use std::fs::File;
+use std::io::BufRead;
+use std::io::BufReader;
+//use std::fs;
+//use std::path::Path;
+//use std::collections::HashMap;
 
-pub fn keyword_in_context(input_path: String, stop_words_path: String) {
+pub fn keyword_in_context() {
+    let args: Vec<String> = env::args().collect();
+    if args.len() <= 1 {
+        println!(
+            "Please provide the input path and the stop words path as command-line arguments."
+        );
+        return;
+    }
+    let input_path: String = args[1].clone();
+    let stop_words_path: String = args[2].clone();
     input_file_to_vector(stop_words_file_to_set, input_path, stop_words_path);
 }
 
@@ -107,29 +117,6 @@ fn stop_words_file_to_set(
     );
     stop_words_set
 }
-
-/*
-fn separate_stop_and_key_words(input_vector:Vec<Vec<String>>, stop_words_vector:Vec<String>) -> (Vec<Vec<String>>,Vec<Vec<String>>)
-{
-    let mut stop_words_occurrences : Vec<Vec<String>> = vec![Vec::new();input_vector.len()];
-    let mut key_words_occurrences :  Vec<Vec<String>> = vec![Vec::new();input_vector.len()];
-    for i in 0..input_vector.len()
-    {
-        for string in &input_vector[i]
-        {
-            if stop_words_vector.contains(&string.to_lowercase())
-            {
-                stop_words_occurrences[i].push(string.clone());
-            }
-            else
-            {
-                key_words_occurrences[i].push(string.clone())
-            }
-        }
-    }
-    (stop_words_occurrences,key_words_occurrences)
-}
-*/
 
 fn find_key_words_indexes(
     func: fn(
@@ -326,53 +313,51 @@ mod tests {
         sw.insert("b".to_string());
         sw.insert("c".to_string());
         let output = find_key_words_indexes(ghost_generate_circularly_shifted_lists, &input, &sw);
-		let answer = vec![vec![0], vec![1]];
-		assert_eq!(output, answer);
+        let answer = vec![vec![0], vec![1]];
+        assert_eq!(output, answer);
     }
-	
-	#[test]
-	fn test_generate_circularly_shifted_lists() {
-		let input = vec![
+
+    #[test]
+    fn test_generate_circularly_shifted_lists() {
+        let input = vec![
             vec!["a".to_string(), "b".to_string()],
             vec!["c".to_string(), "d".to_string()],
         ];
-		let occs = vec![vec![0], vec![1]];
-		let output = generate_circularly_shifted_lists(
-			ghost_sort_circularly_shifted_lists_alphabetically,
-			input, occs
-		);
-		let answer = vec![
+        let occs = vec![vec![0], vec![1]];
+        let output = generate_circularly_shifted_lists(
+            ghost_sort_circularly_shifted_lists_alphabetically,
+            input,
+            occs,
+        );
+        let answer = vec![
             vec!["a".to_string(), "b".to_string()],
             vec!["d".to_string(), "c".to_string()],
         ];
-		assert_eq!(output, answer);
-	}
-	
-	#[test]
-	fn test_sort_circularly_shifted_lists_alphabetically() {
-		let input = vec![
+        assert_eq!(output, answer);
+    }
+
+    #[test]
+    fn test_sort_circularly_shifted_lists_alphabetically() {
+        let input = vec![
             vec!["c".to_string(), "d".to_string()],
             vec!["a".to_string(), "b".to_string()],
         ];
-		let output = sort_circularly_shifted_lists_alphabetically(
-			ghost_print_final_list,
-			input
-		);
-		let answer = vec![
+        let output = sort_circularly_shifted_lists_alphabetically(ghost_print_final_list, input);
+        let answer = vec![
             vec!["a".to_string(), "b".to_string()],
             vec!["c".to_string(), "d".to_string()],
         ];
-		assert_eq!(output, answer);
-	}
-	
-	#[test]
-	fn test_print_final_list() {
-		let input = vec![
+        assert_eq!(output, answer);
+    }
+
+    #[test]
+    fn test_print_final_list() {
+        let input = vec![
             vec!["a".to_string(), "b".to_string()],
             vec!["c".to_string(), "d".to_string()],
         ];
-		let answer = input.clone();
-		let output = print_final_list(no_op, input);
-		assert_eq!(output, answer);
-	}
+        let answer = input.clone();
+        let output = print_final_list(no_op, input);
+        assert_eq!(output, answer);
+    }
 }
