@@ -1,0 +1,1 @@
+&fn(for<'a, 'b> fn(fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>), &'a Vec<Vec<String>>, &'b HashSet<String>), String, Vec<Vec<String>>) -> HashSet<String> {stop_words_file_to_set}

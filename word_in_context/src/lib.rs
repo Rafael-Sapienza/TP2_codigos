@@ -218,14 +218,22 @@ mod tests {
     use super::*;
 
     fn ghost_stop_words_file_to_set(
-        func: fn(
-            fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+        _func: fn(
+            fn(
+                fn(
+                    fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>,
+                    Vec<Vec<String>>,
+                ) -> Vec<Vec<String>>,
+                Vec<Vec<String>>,
+                Vec<Vec<u64>>,
+            ) -> Vec<Vec<String>>,
             &Vec<Vec<String>>,
             &HashSet<String>,
-        ),
-        stop_words_txt: String,
-        input_vector: Vec<Vec<String>>,
-    ) {
+        ) -> Vec<Vec<u64>>,
+        _stop_words_txt: String,
+        _input_vector: Vec<Vec<String>>,
+    ) -> HashSet<String> {
+        HashSet::new()
     }
 
     #[test]
@@ -233,6 +241,7 @@ mod tests {
         let resultado_real = input_file_to_vector(
             ghost_stop_words_file_to_set,
             "../inputs_para_teste/input_para_teste_1.txt".to_string(),
+            "".to_string(),
         );
         let resultado_esperado: Vec<Vec<String>> = vec![
             vec![
