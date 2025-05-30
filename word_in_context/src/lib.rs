@@ -17,16 +17,16 @@ pub fn keyword_in_context(input_path: String, stop_words_path: String) {
 fn input_file_to_vector(
     func: fn(
         fn(
-            fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+            fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
             &Vec<Vec<String>>,
             &HashSet<String>,
-        ),
+        ) -> Vec<Vec<u64>>,
         String,
         Vec<Vec<String>>,
-    ),
+    ) -> HashSet<String>,
     input_txt: String,
     stop_words_txt: String,
-) {
+) ->  Vec<Vec<String>> {
     let mut input_vector: Vec<Vec<String>> = Vec::new();
     let input_file = File::open(&input_txt);
     match input_file {
@@ -57,18 +57,19 @@ fn input_file_to_vector(
         }
         Err(e) => panic!("Erro ao ler o arquivo '{}' : {}", input_txt, e),
     }
-    func(find_key_words_indexes, stop_words_txt, input_vector);
+    func(find_key_words_indexes, stop_words_txt, input_vector.clone());
+	input_vector
 }
 
 fn stop_words_file_to_set(
     func: fn(
-        fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+        fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
         &Vec<Vec<String>>,
         &HashSet<String>,
-    ),
+    ) -> Vec<Vec<u64>>,
     stop_words_txt: String,
     input_vector: Vec<Vec<String>>,
-) {
+) -> HashSet<String> {
     let mut stop_words_set: HashSet<String> = HashSet::new();
     let stop_words_file = File::open(&stop_words_txt);
     match stop_words_file {
@@ -95,6 +96,7 @@ fn stop_words_file_to_set(
         &input_vector,
         &stop_words_set,
     );
+	stop_words_set
 }
 
 /*
@@ -121,10 +123,10 @@ fn separate_stop_and_key_words(input_vector:Vec<Vec<String>>, stop_words_vector:
 */
 
 fn find_key_words_indexes(
-    func: fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+    func: fn(fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>, Vec<Vec<u64>>) -> Vec<Vec<String>>,
     input_vector: &Vec<Vec<String>>,
     stop_words_set: &HashSet<String>,
-) {
+) -> Vec<Vec<u64>> {
     let mut key_words_occurrences: Vec<Vec<u64>> = vec![Vec::new(); input_vector.len()];
     for (i, line) in input_vector.iter().enumerate() {
         for (j, string) in line.iter().enumerate() {
@@ -137,15 +139,16 @@ fn find_key_words_indexes(
     func(
         sort_circularly_shifted_lists_alphabetically,
         input_vector.to_vec(),
-        key_words_occurrences,
-    )
+        key_words_occurrences.clone(),
+    );
+	key_words_occurrences
 }
 
 fn generate_circularly_shifted_lists(
-    func: fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>),
+    func: fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>,
     input_vector: Vec<Vec<String>>,
     key_words_occurrences: Vec<Vec<u64>>,
-) {
+) -> Vec<Vec<String>> {
     let mut circularly_shifted_lists: Vec<Vec<String>> = Vec::new();
     for (i, line) in input_vector.iter().enumerate() {
         for j in &key_words_occurrences[i] {
@@ -158,13 +161,14 @@ fn generate_circularly_shifted_lists(
             }
         }
     }
-    func(print_final_list, circularly_shifted_lists);
+    func(print_final_list, circularly_shifted_lists.clone());
+	circularly_shifted_lists
 }
 
 fn sort_circularly_shifted_lists_alphabetically(
-    func: fn(fn(), Vec<Vec<String>>),
+    func: fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>,
     mut circularly_shifted_lists: Vec<Vec<String>>,
-) {
+) -> Vec<Vec<String>> {
     fn compare_alphabetically(a: &Vec<String>, b: &Vec<String>) -> Ordering {
         if a.is_empty() || a[0].is_empty() {
             return Ordering::Less;
@@ -184,12 +188,14 @@ fn sort_circularly_shifted_lists_alphabetically(
         a.len().cmp(&b.len())
     }
     circularly_shifted_lists.sort_by(|a, b| compare_alphabetically(a, b));
-    func(no_op, circularly_shifted_lists);
+    func(no_op, circularly_shifted_lists.clone());
+	circularly_shifted_lists
 }
 
-fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) {
+fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
     println!("{:?}", final_list);
     func();
+	final_list
 }
 
 fn no_op() {}
@@ -197,11 +203,21 @@ fn no_op() {}
 #[cfg(test)]
 mod tests {
     use super::*;
+	
+	fn ghost_stop_words_file_to_set(
+		func: fn(
+			fn(fn(fn(fn(), Vec<Vec<String>>), Vec<Vec<String>>), Vec<Vec<String>>, Vec<Vec<u64>>),
+			&Vec<Vec<String>>,
+			&HashSet<String>,
+		),
+		stop_words_txt: String,
+		input_vector: Vec<Vec<String>>,
+	) {}
 
     #[test]
-    fn test_input_file_to_string() {
+    fn test_input_file_to_vector() {
         let resultado_real =
-            input_file_to_vector("../inputs_para_teste/input_para_teste_1.txt".to_string());
+            input_file_to_vector(ghost_stop_words_file_to_set, "../inputs_para_teste/input_para_teste_1.txt".to_string());
         let resultado_esperado: Vec<Vec<String>> = vec![
             vec![
                 "Understanding".to_string(),
