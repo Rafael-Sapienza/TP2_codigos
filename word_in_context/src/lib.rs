@@ -193,14 +193,15 @@ fn sort_circularly_shifted_lists_alphabetically(
     circularly_shifted_lists
 }
 
-fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) {
+fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
     
-    let mut file = File::create("saida.txt").expect("Falha ao criar arquivo");
+    let mut file = File::create("output.txt").expect("Falha ao criar arquivo");
 
     for sublist in &final_list {
         writeln!(file, "{}", sublist.join(" ")).expect("Falha ao escrever no arquivo");
     }
-    func();
+    func();  
+    final_list
 }
 
 fn no_op() {}
