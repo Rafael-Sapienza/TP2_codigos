@@ -7,6 +7,7 @@ use std::io::BufReader;
 use std::cmp::Ordering;
 use std::cmp::min;
 use std::collections::HashSet;
+use std::io::Write;
 
 pub fn keyword_in_context(input_path: String, stop_words_path: String) {
     input_file_to_vector(stop_words_file_to_set, input_path, stop_words_path);
@@ -207,10 +208,10 @@ fn sort_circularly_shifted_lists_alphabetically(
 
 fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
     
-    let mut file = File::create("saida.txt")
+    let mut file = File::create("saida.txt").expect("Falha ao criar arquivo");
 
     for sublist in &final_list {
-        writeln!(file, "{}", sublist.join(" "))
+        writeln!(file, "{}", sublist.join(" ")).expect("Falha ao escrever no arquivo");
     }
     func();  
     final_list

@@ -1,1 +1,1 @@
-/home/arthur/dev/UnB/TP2/TP2_codigos/word_in_context/target/debug/libword_in_context.rlib: /home/arthur/dev/UnB/TP2/TP2_codigos/word_in_context/src/lib.rs
+C:\Users\davi1\Documents\codigos\TP2\projeto1\TP2_codigos\word_in_context\target\debug\libword_in_context.rlib: C:\Users\davi1\Documents\codigos\TP2\projeto1\TP2_codigos\word_in_context\src\lib.rs
