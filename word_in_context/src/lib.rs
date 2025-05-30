@@ -5,6 +5,7 @@ use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
+use std::io::Write;
 //use std::fs;
 //use std::path::Path;
 //use std::collections::HashMap;
@@ -193,8 +194,13 @@ fn sort_circularly_shifted_lists_alphabetically(
 }
 
 fn print_final_list(func: fn(), final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
-    println!("{:?}", final_list);
-    func();
+    
+    let mut file = File::create("output.txt").expect("Falha ao criar arquivo");
+
+    for sublist in &final_list {
+        writeln!(file, "{}", sublist.join(" ")).expect("Falha ao escrever no arquivo");
+    }
+    func();  
     final_list
 }
 
