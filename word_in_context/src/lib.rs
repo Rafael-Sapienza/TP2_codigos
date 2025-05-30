@@ -236,6 +236,40 @@ mod tests {
         HashSet::new()
     }
 
+    fn ghost_find_key_words_indexes(
+        _func: fn(
+            fn(fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>, Vec<Vec<String>>) -> Vec<Vec<String>>,
+            Vec<Vec<String>>,
+            Vec<Vec<u64>>,
+        ) -> Vec<Vec<String>>,
+        _input_vector: &Vec<Vec<String>>,
+        _stop_words_set: &HashSet<String>,
+    ) -> Vec<Vec<u64>> {
+        Vec::new()
+    }
+
+    fn ghost_generate_circularly_shifted_lists(
+        _func: fn(
+            fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>,
+            Vec<Vec<String>>,
+        ) -> Vec<Vec<String>>,
+        _input_vector: Vec<Vec<String>>,
+        _key_words_occurrences: Vec<Vec<u64>>,
+    ) -> Vec<Vec<String>> {
+        Vec::new()
+    }
+
+    fn ghost_sort_circularly_shifted_lists_alphabetically(
+        _func: fn(fn(), Vec<Vec<String>>) -> Vec<Vec<String>>,
+        mut _circularly_shifted_lists: Vec<Vec<String>>,
+    ) -> Vec<Vec<String>> {
+        Vec::new()
+    }
+
+    fn ghost_print_final_list(_func: fn(), _final_list: Vec<Vec<String>>) -> Vec<Vec<String>> {
+        Vec::new()
+    }
+
     #[test]
     fn test_input_file_to_vector() {
         let resultado_real = input_file_to_vector(
@@ -264,8 +298,81 @@ mod tests {
                 "Rust".to_string(),
             ],
         ];
-        println!("resultado real: {:?}", resultado_real);
-        println!("resultado esperado: {:?}", resultado_esperado);
         assert_eq!(resultado_real, resultado_esperado);
     }
+
+    #[test]
+    fn test_stop_words_file_to_set() {
+        let output = stop_words_file_to_set(
+            ghost_find_key_words_indexes,
+            "../inputs_para_teste/stop_words_para_teste_1.txt".to_string(),
+            vec![],
+        );
+        let mut answer: HashSet<String> = HashSet::new();
+        let sw = vec!["and".to_string(), "or".to_string(), "not".to_string()];
+        for s in sw {
+            answer.insert(s);
+        }
+        assert_eq!(answer, output);
+    }
+
+    #[test]
+    fn test_find_key_words_indexes() {
+        let input = vec![
+            vec!["a".to_string(), "b".to_string()],
+            vec!["c".to_string(), "d".to_string()],
+        ];
+        let mut sw: HashSet<String> = HashSet::new();
+        sw.insert("b".to_string());
+        sw.insert("c".to_string());
+        let output = find_key_words_indexes(ghost_generate_circularly_shifted_lists, &input, &sw);
+		let answer = vec![vec![0], vec![1]];
+		assert_eq!(output, answer);
+    }
+	
+	#[test]
+	fn test_generate_circularly_shifted_lists() {
+		let input = vec![
+            vec!["a".to_string(), "b".to_string()],
+            vec!["c".to_string(), "d".to_string()],
+        ];
+		let occs = vec![vec![0], vec![1]];
+		let output = generate_circularly_shifted_lists(
+			ghost_sort_circularly_shifted_lists_alphabetically,
+			input, occs
+		);
+		let answer = vec![
+            vec!["a".to_string(), "b".to_string()],
+            vec!["d".to_string(), "c".to_string()],
+        ];
+		assert_eq!(output, answer);
+	}
+	
+	#[test]
+	fn test_sort_circularly_shifted_lists_alphabetically() {
+		let input = vec![
+            vec!["c".to_string(), "d".to_string()],
+            vec!["a".to_string(), "b".to_string()],
+        ];
+		let output = sort_circularly_shifted_lists_alphabetically(
+			ghost_print_final_list,
+			input
+		);
+		let answer = vec![
+            vec!["a".to_string(), "b".to_string()],
+            vec!["c".to_string(), "d".to_string()],
+        ];
+		assert_eq!(output, answer);
+	}
+	
+	#[test]
+	fn test_print_final_list() {
+		let input = vec![
+            vec!["a".to_string(), "b".to_string()],
+            vec!["c".to_string(), "d".to_string()],
+        ];
+		let answer = input.clone();
+		let output = print_final_list(no_op, input);
+		assert_eq!(output, answer);
+	}
 }
