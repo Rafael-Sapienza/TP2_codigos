@@ -1,6 +1,7 @@
 ## Avaliação 01: Exercises in Programming Style
 - Alunos:
   - Arthur Menezes Botelho: 231003362
+  - Maria Eduarda Araujo Carvalho: 232023969
 - Estilo: Kick Forward
 - Linguagem: Rust
 - Link da vídeo aula: -
